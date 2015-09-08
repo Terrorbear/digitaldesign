@@ -19,28 +19,34 @@ http://www.flukenetworks.com/enterprise-network/network-monitoring/Tap-Solutions
 
 ## Architecture
 
-Ethernet input goes to several stages of parsing.
+### Ethernet input goes to several stages of parsing.
+
 1. Analytic parsing: In-depth packet analysis.
 2. Filter parsing: Parsing just enough to filter appropriate packets so as to avoid latency.
 
-Analytics:
+###Analytics:
+
 1. Source
 2. Determine traffic categories
 3. Bandwidth usage
 4. Latency
 5. High fragmentation
 
-Filter:
+### Filter:
+
 1. Elastic vs inelastic traffic.
 2. Blocking certain sources.
 3. Throttling certain sources.
 4. Expediting certain sources.
 
-Audio:
+### Audio:
 
-Video:
+### Video:
 
-Output:
+1. VGA controller
+
+### Output:
+
 1. Traffic rules that apply to all traffic.
 2. Buffering rules.
 3. Smarter drop policies.
