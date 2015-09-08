@@ -44,6 +44,7 @@ http://www.flukenetworks.com/enterprise-network/network-monitoring/Tap-Solutions
 1. Alarms for suspicious behavior
 2. Notification settings
 3. Alarms for recurring network failures
+4. Simple piezo-speakers
 
 ### Video:
 
