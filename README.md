@@ -41,9 +41,20 @@ http://www.flukenetworks.com/enterprise-network/network-monitoring/Tap-Solutions
 
 ### Audio:
 
+1. Alarms for suspicious behavior
+2. Notification settings
+3. Alarms for recurring network failures
+
 ### Video:
 
 1. VGA controller
+2. Lists of traffic
+3. Real-time feed of bandwidth usage
+4. Real-time feed of ping
+
+### Controls:
+
+1. Keyboard for arrow keys and numpad.
 
 ### Output:
 
