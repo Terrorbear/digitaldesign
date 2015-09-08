@@ -28,6 +28,7 @@ Analytics:
 2. Determine traffic categories
 3. Bandwidth usage
 4. Latency
+5. High fragmentation
 
 Filter:
 1. Elastic vs inelastic traffic.
@@ -43,4 +44,3 @@ Output:
 1. Traffic rules that apply to all traffic.
 2. Buffering rules.
 3. Smarter drop policies.
-4. Widen MTU.
