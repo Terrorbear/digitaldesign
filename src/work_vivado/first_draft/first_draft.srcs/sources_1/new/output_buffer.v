@@ -19,15 +19,11 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`include macros
 
 module output_buffer(
-    input [PACKET_LEN - 1: 0]
+    input [PACKET_LEN - 1: 0] in_data,
     output display_data
     );
-    
-    //Read from memory
-    
-    
+
     
 endmodule

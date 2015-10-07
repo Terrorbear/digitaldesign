@@ -1,0 +1,67 @@
+/*
+
+Vivado v2015.2 (64-bit)
+SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+Process ID: 21821
+
+Current time: 	10/7/15 10:39:09 AM EDT
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Red Hat Enterprise Linux Server release 7.1 (Maipo)
+Version: 3.10.0-229.14.1.el7.x86_64
+Architecture: amd64
+Available processors (cores): 8
+
+DISPLAY: :0
+Screen size: 1600x1200
+Screen resolution (DPI): 96
+Available screens: 1
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	1.8.0_25 64-bit
+Java home: 	/afs/ece.cmu.edu/support/xilinx/xilinx.release/Vivado-2015.2/Vivado/2015.2/tps/lnx64/jre
+
+User name: 	terencea
+User directory: /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+Vivado preferences path: /afs/ece.cmu.edu/usr/terencea/.Xilinx/Vivado/2015.2/vivado.ini
+Vivado layouts directory: /afs/ece.cmu.edu/usr/terencea/.Xilinx/Vivado/2015.2/layouts/application
+
+GUI allocated memory:	132 MB
+GUI max memory:		3,052 MB
+Engine allocated memory: 4,844 MB
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// [GUI Memory]: 45 MB (+44187kb) [00:00:05]
+// [Engine Memory]: 4,844 MB (+4927379kb) [00:00:05]
+selectList(PAResourceEtoH.GettingStartedView_RECENT_PROJECTS, "/afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.xpr", 0); // t:v (JViewport:JComponent, cl:JFrame)
+// Opening Vivado Project: /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.xpr. Version: Vivado v2015.2 
+// cp:P (cl:JFrame):  Open Project : addNotify
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_CURRENT
+// HMemoryUtils.trashcanNow. Engine heap size: 4,904 MB. GUI used memory: 21 MB. Current time: 10/7/15 10:39:11 AM EDT
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 53 MB (+6071kb) [00:00:08]
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: open_project /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/afs/ece/support/xilinx/xilinx.release/Vivado/data/ip'. 
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Project name: second_draft; location: /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft; part: xc7z045ffg900-2
+dismissDialog("Open Project"); // cp:P (cl:JFrame)
+// TclEventType: DG_UPDATE_GRAPH
+// TclEventType: DG_ANALYSIS_MSG_RESET
+// TclEventType: DG_UPDATE_GRAPH
+// TclEventType: DG_ANALYSIS_MSG_RESET
+// TclEventType: DG_UPDATE_GRAPH
+// [GUI Memory]: 56 MB (+1262kb) [00:00:10]
+// Run Command: PAResourceCommand.PACommandNames_OPEN_SOURCE_FILE
+setText("PAResourceOtoP.OpenSourceTreeTablePanel_OPEN_SOURCE_TREE_TABLE_SEARCH_FIELD", (String) null); // OverlayTextField:JTextField (DefaultOverlayable:JPanel)

@@ -7,9 +7,9 @@
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="edbccc42c5c64b1a9196c62bf5c7eda5"/>
-    <Option Name="Part" Val="xc7vx485tffg1761-2"/>
+    <Option Name="Part" Val="xc7z045ffg900-2"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
-    <Option Name="BoardPart" Val="xilinx.com:vc707:part0:1.2"/>
+    <Option Name="BoardPart" Val="xilinx.com:zc706:part0:1.2"/>
     <Option Name="ActiveSimSet" Val="sim_1"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="EnableCoreContainer" Val="FALSE"/>
@@ -55,6 +55,34 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/bd/simp_hookup/simp_hookup.bd">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_processing_system7_0_0/simp_hookup_processing_system7_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_axi_bram_ctrl_0_0/simp_hookup_axi_bram_ctrl_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_axi_gpio_0_0/simp_hookup_axi_gpio_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="hdl/simp_hookup.v"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_auto_pc_0/simp_hookup_auto_pc_0.xci"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_blk_mem_gen_0_0/simp_hookup_blk_mem_gen_0_0.xci"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_axi_mem_intercon_0/simp_hookup_axi_mem_intercon_0.xci"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="simp_hookup.bmm"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="simp_hookup_ooc.xdc"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_auto_pc_1/simp_hookup_auto_pc_1.xci"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_rst_processing_system7_0_50M_0/simp_hookup_rst_processing_system7_0_50M_0.xci"/>
+        <CompFileExtendedInfo CompFileName="simp_hookup.bd" FileRelPathName="ip/simp_hookup_xbar_0/simp_hookup_xbar_0.xci"/>
+      </File>
+      <File Path="$PSRCDIR/sources_1/bd/simp_hookup/hdl/simp_hookup_wrapper.v">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="top"/>
@@ -74,40 +102,13 @@
       </Config>
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1">
+      <Filter Type="Srcs"/>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="top"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
         <Option Name="SrcSet" Val="sources_1"/>
-      </Config>
-    </FileSet>
-    <FileSet Name="packet_mem" Type="BlockSrcs" RelSrcDir="$PSRCDIR/packet_mem">
-      <File Path="$PSRCDIR/sources_1/ip/packet_mem/packet_mem.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="packet_mem.xml"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="packet_mem.veo"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="summary.log"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="doc/blk_mem_gen_v8_2_changelog.txt"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="packet_mem_funcsim.v"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="packet_mem_stub.vhdl"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="packet_mem_funcsim.vhdl"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="packet_mem_stub.v"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="sim/packet_mem.v"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="synth/packet_mem.vhd"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="packet_mem.dcp"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="blk_mem_gen_v8_2/simulation/blk_mem_gen_v8_2.v"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="packet_mem_ooc.xdc"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="blk_mem_gen_v8_2/hdl/blk_mem_gen_v8_2_vhsyn_rfs.vhd"/>
-        <CompFileExtendedInfo CompFileName="packet_mem.xci" FileRelPathName="blk_mem_gen_v8_2/hdl/blk_mem_gen_v8_2.vhd"/>
-      </File>
-      <Config>
-        <Option Name="TopModule" Val="packet_mem"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
       </Config>
     </FileSet>
   </FileSets>
@@ -133,44 +134,15 @@
     </Simulator>
   </Simulators>
   <Runs Version="1" Minor="9">
-    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7vx485tffg1761-2" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" State="current">
+    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7z045ffg900-2" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" State="current">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2015">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2015"/>
         <Step Id="synth_design"/>
       </Strategy>
     </Run>
-    <Run Id="packet_mem_synth_1" Type="Ft3:Synth" SrcSet="packet_mem" Part="xc7vx485tffg1761-2" ConstrsSet="packet_mem" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/packet_mem_synth_1">
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7z045ffg900-2" ConstrsSet="constrs_1" Description="Vivado Implementation Defaults" State="current" SynthRun="synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2015">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
-    </Run>
-    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7vx485tffg1761-2" ConstrsSet="constrs_1" Description="Vivado Implementation Defaults" State="current" SynthRun="synth_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2015">
-          <Desc>Vivado Implementation Defaults</Desc>
-        </StratHandle>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-    </Run>
-    <Run Id="packet_mem_impl_1" Type="Ft2:EntireDesign" Part="xc7vx485tffg1761-2" ConstrsSet="packet_mem" Description="Vivado Implementation Defaults" SynthRun="packet_mem_synth_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2015">
-          <Desc>Vivado Implementation Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2015"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
