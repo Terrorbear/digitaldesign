@@ -1,0 +1,5 @@
+Useful links:
+
+Getting Linux onto board:
+https://wiki.analog.com/resources/tools-software/linux-software/zynq_images
+https://wiki.analog.com/resources/tools-software/linux-software/zynq_images/linux_hosts
