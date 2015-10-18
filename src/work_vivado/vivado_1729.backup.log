@@ -1,0 +1,191 @@
+#-----------------------------------------------------------
+# Vivado v2015.2 (64-bit)
+# SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+# IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
+# Start of session at: Wed Oct  7 10:38:58 2015
+# Process ID: 21821
+# Log file: /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/vivado.log
+# Journal file: /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/afs/ece/support/xilinx/xilinx.release/Vivado/data/ip'.
+open_bd_design {/afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/ethernet_port/ethernet_port.bd}
+Adding component instance block -- xilinx.com:ip:tri_mode_ethernet_mac:9.0 - tri_mode_ethernet_mac_0
+Adding component instance block -- xilinx.com:ip:clk_wiz:5.1 - clk_wiz_0
+Adding component instance block -- xilinx.com:ip:gig_ethernet_pcs_pma:15.0 - gig_ethernet_pcs_pma_0
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_0
+Successfully read diagram <ethernet_port> from BD file </afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/ethernet_port/ethernet_port.bd>
+create_bd_design "built_in_ethernet"
+Wrote  : </afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/built_in_ethernet.bd> 
+update_compile_order -fileset sources_1
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:tri_mode_ethernet_mac:9.0 tri_mode_ethernet_mac_0
+INFO: [Ipptcl 7-578] No Compatible Board Interface found.Board Tab not created
+endgroup
+INFO: [Ipptcl 7-578] No Compatible Board Interface found.Board Tab not created
+startgroup
+set_property -dict [list CONFIG.Physical_Interface {RGMII} CONFIG.MAC_Speed {Tri_speed}] [get_bd_cells tri_mode_ethernet_mac_0]
+endgroup
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:board  [get_bd_intf_pins tri_mode_ethernet_mac_0/rgmii]
+INFO: [board_rule:/tri_mode_ethernet_mac_0-100] create_bd_intf_port -mode Master -vlnv xilinx.com:interface:rgmii_rtl:1.0 rgmii_rtl
+INFO: [board_rule:/tri_mode_ethernet_mac_0-100] connect_bd_intf_net /rgmii_rtl /tri_mode_ethernet_mac_0/rgmii
+WARNING: [board_rule:/tri_mode_ethernet_mac_0-100] Board automation did not generate location constraint for /tri_mode_ethernet_mac_0/rgmii. Users may need to specify the location constraint manually.
+apply_bd_automation -rule xilinx.com:bd_rule:board  [get_bd_intf_pins tri_mode_ethernet_mac_0/mdio_external]
+INFO: [board_rule:/tri_mode_ethernet_mac_0-100] create_bd_intf_port -mode Master -vlnv xilinx.com:interface:mdio_io:1.0 mdio_io
+INFO: [board_rule:/tri_mode_ethernet_mac_0-100] connect_bd_intf_net /mdio_io /tri_mode_ethernet_mac_0/mdio_external
+WARNING: [board_rule:/tri_mode_ethernet_mac_0-100] Board automation did not generate location constraint for /tri_mode_ethernet_mac_0/mdio_external. Users may need to specify the location constraint manually.
+endgroup
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:5.1 clk_wiz_0
+endgroup
+set_property location {1 51 226} [get_bd_cells clk_wiz_0]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:board  [get_bd_pins clk_wiz_0/clk_in1]
+INFO: [board_rule:/clk_wiz_0-100] create_bd_port -dir I clock_rtl -type clk
+INFO: [board_rule:/clk_wiz_0-100] set_property CONFIG.FREQ_HZ 100000000 /clock_rtl
+INFO: [board_rule:/clk_wiz_0-100] set_property CONFIG.PHASE 0.000 /clock_rtl
+INFO: [board_rule:/clk_wiz_0-100] connect_bd_net /clock_rtl /clk_wiz_0/clk_in1
+WARNING: [board_rule:/clk_wiz_0-100] Board automation did not generate location constraint for /clk_wiz_0/clk_in1. Users may need to specify the location constraint manually.
+apply_bd_automation -rule xilinx.com:bd_rule:board -config {Board_Interface "reset" }  [get_bd_pins clk_wiz_0/reset]
+INFO: [board_rule:/clk_wiz_0-100] set_property CONFIG.USE_BOARD_FLOW true [get_bd_cells /clk_wiz_0]
+INFO: [board_rule:/clk_wiz_0-100] set_property CONFIG.RESET_BOARD_INTERFACE reset [get_bd_cells /clk_wiz_0]
+INFO: [board_rule:/clk_wiz_0-100] create_bd_port -dir I reset -type rst
+INFO: [board_rule:/clk_wiz_0-100] set_property CONFIG.POLARITY  /reset
+INFO: [board_rule:/clk_wiz_0-100] connect_bd_net /reset /clk_wiz_0/reset
+INFO: [board_rule:/clk_wiz_0-100] set_property CONFIG.POLARITY ACTIVE_HIGH /reset
+endgroup
+expected floating-point number but got ""
+expected floating-point number but got ""
+startgroup
+set_property -dict [list CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {125.000} CONFIG.MMCM_DIVCLK_DIVIDE {1} CONFIG.MMCM_CLKOUT0_DIVIDE_F {8.000} CONFIG.CLKOUT1_JITTER {125.247}] [get_bd_cells clk_wiz_0]
+endgroup
+connect_bd_net [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins tri_mode_ethernet_mac_0/gtx_clk]
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+startgroup
+set_property -dict [list CONFIG.CLKOUT2_USED {true} CONFIG.CLKOUT3_USED {true} CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {100.000} CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {125.000} CONFIG.MMCM_DIVCLK_DIVIDE {1} CONFIG.MMCM_CLKOUT0_DIVIDE_F {10.000} CONFIG.MMCM_CLKOUT1_DIVIDE {8} CONFIG.MMCM_CLKOUT2_DIVIDE {10} CONFIG.NUM_OUT_CLKS {3} CONFIG.CLKOUT1_JITTER {130.958} CONFIG.CLKOUT2_JITTER {125.247} CONFIG.CLKOUT2_PHASE_ERROR {98.575} CONFIG.CLKOUT3_JITTER {130.958} CONFIG.CLKOUT3_PHASE_ERROR {98.575}] [get_bd_cells clk_wiz_0]
+endgroup
+delete_bd_objs [get_bd_nets clk_wiz_0_clk_out1]
+connect_bd_net [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins tri_mode_ethernet_mac_0/s_axi_aclk]
+connect_bd_net [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins tri_mode_ethernet_mac_0/gtx_clk]
+connect_bd_net -net [get_bd_nets clk_wiz_0_clk_out2] [get_bd_pins tri_mode_ethernet_mac_0/gtx_clk90] [get_bd_pins clk_wiz_0/clk_out2]
+validate_bd_design
+ERROR: [BD 41-238] Port/Pin property PHASE does not match between /tri_mode_ethernet_mac_0/gtx_clk90(90) and /clk_wiz_0/clk_out2(0.0)
+ERROR: [Common 17-39] 'validate_bd_design' failed due to earlier errors.
+delete_bd_objs [get_bd_nets clk_wiz_0_clk_out2]
+connect_bd_net [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins tri_mode_ethernet_mac_0/gtx_clk]
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+startgroup
+set_property -dict [list CONFIG.CLKOUT3_REQUESTED_OUT_FREQ {125.000} CONFIG.CLKOUT3_REQUESTED_PHASE {90.000} CONFIG.MMCM_DIVCLK_DIVIDE {1} CONFIG.MMCM_CLKOUT2_DIVIDE {8} CONFIG.MMCM_CLKOUT2_PHASE {90.000} CONFIG.CLKOUT3_JITTER {125.247}] [get_bd_cells clk_wiz_0]
+endgroup
+connect_bd_net [get_bd_pins clk_wiz_0/clk_out3] [get_bd_pins tri_mode_ethernet_mac_0/gtx_clk90]
+validate_bd_design
+CRITICAL WARNING: [BD 41-759] The input pins (listed below) are either not connected or do not have a source port, and they don't have a tie-off specified. 
+Please check your design and connect them if needed: 
+/tri_mode_ethernet_mac_0/glbl_rstn
+/tri_mode_ethernet_mac_0/rx_axi_rstn
+/tri_mode_ethernet_mac_0/tx_axi_rstn
+
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+expected floating-point number but got ""
+startgroup
+set_property -dict [list CONFIG.RESET_TYPE {ACTIVE_LOW} CONFIG.RESET_PORT {resetn}] [get_bd_cells clk_wiz_0]
+delete_bd_objs [get_bd_nets reset_1]
+endgroup
+set_property -dict [list CONFIG.POLARITY {ACTIVE_LOW}] [get_bd_ports reset]
+connect_bd_net [get_bd_ports reset] [get_bd_pins clk_wiz_0/resetn]
+connect_bd_net -net [get_bd_nets reset_1] [get_bd_ports reset] [get_bd_pins tri_mode_ethernet_mac_0/rx_axi_rstn]
+set_property location {64 245} [get_bd_ports reset]
+connect_bd_net -net [get_bd_nets reset_1] [get_bd_ports reset] [get_bd_pins tri_mode_ethernet_mac_0/tx_axi_rstn]
+connect_bd_net -net [get_bd_nets reset_1] [get_bd_ports reset] [get_bd_pins tri_mode_ethernet_mac_0/glbl_rstn]
+connect_bd_net -net [get_bd_nets reset_1] [get_bd_ports reset] [get_bd_pins tri_mode_ethernet_mac_0/s_axi_resetn]
+validate_bd_design
+make_wrapper -files [get_files /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/built_in_ethernet.bd] -top
+INFO: [BD 41-1662] The design 'built_in_ethernet.bd' is already validated. Therefore parameter propagation will not be re-run.
+Verilog Output written to : /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/hdl/built_in_ethernet.v
+Verilog Output written to : /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/hdl/built_in_ethernet_wrapper.v
+Wrote  : </afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/built_in_ethernet.bd> 
+add_files -norecurse /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/hdl/built_in_ethernet_wrapper.v
+update_compile_order -fileset sources_1
+open_bd_design {/afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/ethernet_port/ethernet_port.bd}
+open_bd_design {/afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/built_in_ethernet.bd}
+open_bd_design {/afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/ethernet_port/ethernet_port.bd}
+remove_files /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/ethernet_port/ethernet_port.bd
+remove_files /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/ethernet_port/hdl/ethernet_port_wrapper.v
+file delete -force /afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/ethernet_port/hdl/ethernet_port_wrapper.v
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+update_compile_order -fileset sim_1
+open_bd_design {/afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/built_in_ethernet.bd}
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0
+endgroup
+CRITICAL WARNING: [PS7-6]  LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet0. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6]  LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet0. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6]  LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet0. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6] LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet1. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6]  LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet0. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6] LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet1. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6]  LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet0. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6] LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet1. Recommendation is to use 1.8/2.5V IO.
+startgroup
+set_property -dict [list CONFIG.PCW_QSPI_PERIPHERAL_ENABLE {0} CONFIG.PCW_ENET0_PERIPHERAL_ENABLE {1} CONFIG.PCW_ENET0_ENET0_IO {MIO 16 .. 27} CONFIG.PCW_ENET1_PERIPHERAL_ENABLE {1} CONFIG.PCW_ENET1_ENET1_IO {MIO 28 .. 39}] [get_bd_cells processing_system7_0]
+CRITICAL WARNING: [PS7-6]  LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet0. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6] LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet1. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6]  LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet0. Recommendation is to use 1.8/2.5V IO.
+CRITICAL WARNING: [PS7-6] LVCMOS33 (3.3V) is not supported for RGMII interface in Ethernet1. Recommendation is to use 1.8/2.5V IO.
+endgroup
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:gig_ethernet_pcs_pma:15.0 gig_ethernet_pcs_pma_0
+endgroup
+set_property location {2 743 -136} [get_bd_cells gig_ethernet_pcs_pma_0]
+delete_bd_objs [get_bd_intf_nets tri_mode_ethernet_mac_0_rgmii] [get_bd_intf_ports rgmii_rtl]
+set_property location {1287 553} [get_bd_intf_ports mdio_io]
+delete_bd_objs [get_bd_intf_nets tri_mode_ethernet_mac_0_mdio_external] [get_bd_intf_ports mdio_io]
+INFO: [Ipptcl 7-578] No Compatible Board Interface found.Board Tab not created
+startgroup
+set_property -dict [list CONFIG.Physical_Interface {GMII} CONFIG.MAC_Speed {Tri_speed}] [get_bd_cells tri_mode_ethernet_mac_0]
+delete_bd_objs [get_bd_nets clk_wiz_0_clk_out3]
+endgroup
+save_bd_design
+Wrote  : </afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/second_draft/second_draft.srcs/sources_1/bd/built_in_ethernet/built_in_ethernet.bd> 
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue Oct 13 15:09:00 2015...

@@ -1,0 +1,33 @@
+{
+   guistr: "# # String gsaved with Nlview 6.4.12  2014-12-16 bk=1.3272 VDI=35 GEI=35 GUI=JA:1.8
+#  -string -flagsOSRD
+preplace port tx_axis_mac_tvalid -pg 1 -y 190 -defaultsOSRD
+preplace port reset_n -pg 1 -y 370 -defaultsOSRD
+preplace port sfp -pg 1 -y 170 -defaultsOSRD
+preplace port tx_axis_mac_tready -pg 1 -y 150 -defaultsOSRD
+preplace port clock_rtl -pg 1 -y 350 -defaultsOSRD
+preplace port tx_axis_mac_tlast -pg 1 -y 130 -defaultsOSRD
+preplace portBus tx_axis_mac_tdata -pg 1 -y 110 -defaultsOSRD
+preplace inst tri_mode_ethernet_mac_0 -pg 1 -lvl 2 -y 230 -defaultsOSRD
+preplace inst util_vector_logic_0 -pg 1 -lvl 2 -y 520 -defaultsOSRD
+preplace inst gig_ethernet_pcs_pma_0 -pg 1 -lvl 3 -y 250 -defaultsOSRD
+preplace inst clk_wiz_0 -pg 1 -lvl 1 -y 660 -defaultsOSRD
+preplace netloc gig_ethernet_pcs_pma_0_sfp 1 3 1 N
+preplace netloc tx_axis_mac_tdata_1 1 0 2 NJ 110 N
+preplace netloc tri_mode_ethernet_mac_0_gmii 1 2 1 860
+preplace netloc util_vector_logic_0_Res 1 2 1 890
+preplace netloc tx_axis_mac_tlast_1 1 0 2 NJ 130 N
+preplace netloc tx_axis_mac_tvalid_1 1 0 2 NJ 190 N
+preplace netloc clk_wiz_0_clk_out1 1 1 2 390 420 880
+preplace netloc tri_mode_ethernet_mac_0_mdio_external 1 2 1 850
+preplace netloc tri_mode_ethernet_mac_0_tx_axis_mac_tready 1 1 3 390 10 NJ 10 NJ
+preplace netloc clk_wiz_0_clk_out2 1 1 2 400 430 860
+preplace netloc clock_rtl_1 1 0 1 230
+preplace netloc clk_wiz_0_clk_out4 1 1 2 NJ 470 870
+preplace netloc reset_1 1 0 2 220 520 410
+levelinfo -pg 1 200 310 660 1110 1310
+",
+}
+{
+   da_board_cnt: "7",
+}
