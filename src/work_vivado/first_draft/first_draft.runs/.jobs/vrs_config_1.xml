@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<Runs Version="1" Minor="0">
-	<Run Id="packet_mem_synth_1" LaunchDir="/afs/ece.cmu.edu/usr/terencea/Public/18545/digitaldesign/src/work_vivado/first_draft/first_draft.runs/packet_mem_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
-</Runs>
-
