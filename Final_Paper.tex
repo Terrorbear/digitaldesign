@@ -9,6 +9,15 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
+% For citations
+\usepackage[backend=bibtex]{biblatex}
+\addbibresource{Final_Paper.bib}
+\usepackage{hyperref}
+\hypersetup{
+  linkcolor=blue,
+  citecolor=blue
+}
+
 \title{
   {Ethernet on the Zynq ZC706 \vspace{0.2in}}\\
   {\large 18-545 Advanced Digital Design \vspace{0.2in}}\\
@@ -22,6 +31,12 @@
 \maketitle
 
 \chapter{Introduction}
+This paper is a guide to start building ethernet on the Zynq ZC706 board. It was originally written as the final project for a 18-545 project which didn't complete because they struggled to build an ethernet adapter in programmable logic and have it properly communicate with the Processing System. The intention of this paper is to aid future groups in completing an ethernet adapter, as well as providing the necessary background and deterring groups from fruitless avenues. This guide will expect a very minimal understanding of Vivado because most students in 18-545 have had very limited exposure to Vivado. We will attempt to provide the pertinent references as needed.
+
+That being said, going through Lab 2 in \textit{Vivado Design Suite Tutorial} \cite{vivado_tut} will probably be the fastest way to understand the work flow. Also, chapter 2 and chapter 4 of \textit{UltraFast Design Methodology Guide for the Vivado Design Suite} \cite{ultrafast} will be superbly helpful in learning to use Vivado, especially for using IP in Vivado. Finally, if you still want more details on using IP, you can refer to the Vivado guide on \textit{Designing with IP} \cite{IP} and \textit{Designing IP Subsystems Using IP Integrator} \cite{IP_subsystems}.
+
+
+\chapter{Ethernet Background}
 
 \chapter{Basic Approaches}
 
@@ -47,7 +62,10 @@ Some advice I'd have for anyone planning to pursue an FPGA Ethernet project in t
 For the class in general, it's definitely better to spend the long hours working on your project earlier in the semester, before your other classes have started to pick up. In addition, at the beginning of the semester, try and pick a project that you can be passionate about and that you would really like to see succeed. At times, I felt very unmotivated to go in an work on the project simply because I wasn't particularly excited about our final product.
 
 To all future students reading this, good luck with the class and have fun!
+
+\printbibliography
 \appendix
 \chapter{Appendix}
+
 
 \end{document}
