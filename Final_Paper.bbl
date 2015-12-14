@@ -16,6 +16,25 @@
   {}
 \endgroup
 
+\entry{design_flows}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Xilinx}{X.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{X1}
+  \strng{fullhash}{X1}
+  \field{sortinit}{X}
+  \field{title}{Design Flows Overview}
+  \verb{url}
+  \verb http://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_4/ug8
+  \verb 88-vivado-design-flows-overview-tutorial.pdf
+  \endverb
+  \field{year}{2015}
+\endentry
+
 \entry{IP_subsystems}{online}{}
   \name{author}{1}{}{%
     {{}%
@@ -50,6 +69,25 @@
   \verb{url}
   \verb http://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_4/ug8
   \verb 96-vivado-ip.pdf
+  \endverb
+  \field{year}{2015}
+\endentry
+
+\entry{starter}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Xilinx}{X.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{X1}
+  \strng{fullhash}{X1}
+  \field{sortinit}{X}
+  \field{title}{Getting Started}
+  \verb{url}
+  \verb http://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_4/ug9
+  \verb 10-vivado-getting-started.pdf
   \endverb
   \field{year}{2015}
 \endentry

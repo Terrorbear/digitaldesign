@@ -17,6 +17,10 @@
   linkcolor=blue,
   citecolor=blue
 }
+\hypersetup{colorlinks=true,linkcolor=blue}
+% For citations and urls in captions
+\usepackage{caption}
+
 
 \title{
   {Ethernet on the Zynq ZC706 \vspace{0.2in}}\\
@@ -33,14 +37,47 @@
 \chapter{Introduction}
 This paper is a guide to start building ethernet on the Zynq ZC706 board. It was originally written as the final project for a 18-545 project which didn't complete because they struggled to build an ethernet adapter in programmable logic and have it properly communicate with the Processing System. The intention of this paper is to aid future groups in completing an ethernet adapter, as well as providing the necessary background and deterring groups from fruitless avenues. This guide will expect a very minimal understanding of Vivado because most students in 18-545 have had very limited exposure to Vivado. We will attempt to provide the pertinent references as needed.
 
-That being said, going through Lab 2 in \textit{Vivado Design Suite Tutorial} \cite{vivado_tut} will probably be the fastest way to understand the work flow. Also, chapter 2 and chapter 4 of \textit{UltraFast Design Methodology Guide for the Vivado Design Suite} \cite{ultrafast} will be superbly helpful in learning to use Vivado, especially for using IP in Vivado. Finally, if you still want more details on using IP, you can refer to the Vivado guide on \textit{Designing with IP} \cite{IP} and \textit{Designing IP Subsystems Using IP Integrator} \cite{IP_subsystems}.
-
+That being said, going through Lab 2 in \textit{Vivado Design Suite Tutorial} \cite{vivado_tut} will probably be the fastest way to understand the work flow. Also, chapter 2 and chapter 4 of \textit{UltraFast Design Methodology Guide for the Vivado Design Suite} \cite{ultrafast} will be superbly helpful in learning to use Vivado, especially for using Intellectual Property (IP) in Vivado. Finally, if you still want more details on using IP, you can refer to the Vivado guide on \textit{Designing with IP} \cite{IP} and \textit{Designing IP Subsystems Using IP Integrator} \cite{IP_subsystems}. If you'd like more information on Vivado in general, refer to the \textit{Getting Started} \cite{starter} guide and the \textit{Designs Flows Overview} \cite{design_flows}.
 
 \chapter{Ethernet Background}
+In this chapter we'll provide the basics of ethernet, just enough to get you started.
+Our discussion will start at the lowest level, and work our way up to the peripheral port on the processing system. If any of these sections are found to be lacking, you can find more information from the 802.3ab standard available on the \href{http://standards.ieee.org/about/get/802/802.3.html}{IEEE Standard Association}. Wikipedia is also your friend.
+
+\section{Logical Link Layer}
+The logical link layer may also be referred to as the physical layer.
+This network layer deals with how the bits are formatted into frames and how they're transmitted.
+If you've worked on any networking projects previously, you could probably just skip this section.
+
+\subsection{Ethernet Frame}
+In \ref{fig:eframe} you can see the basic format. However, there is another format for supporting larger frames called jumbo frames, so if frames don't look like what you're expecting that is a possibility. But it isn't very likely, because although most switches and routers support jumbo frames, they're not widely used.
+\begin{figure}[h]
+\centering
+\includegraphics[width=6in]{eframe}
+\caption{Ethernet Frame Format}
+\small source:\url{https://en.wikipedia.org/wiki/Ethernet_frame}
+\label{fig:eframe}
+\end{figure}
+The layer one bit sequence is what you'd expect to find on the wire, and the layer two format is what you'd expect to reach the operating system.
+
+If there are other headers you're expecting, they'd be in the beginning of the payload. All information used by higher network layers would be found there as well. The standard maximum transmission unit is 1500 bytes, so if you're making a large download, it' be broken up into roughly 1500 byte chunks, each sent according to some highler level protocol like TCP or UDP and your application will receive them in these chunks.
+
+Ethernet frames are sent across Cat-5 or Cat-6 cables, and you'll often see the cables referred to as full-duplex or half-duplex. Duplex refers to the two directions of traffic, tranmissions and receptions. A half-duplex cable/port alternates between transmit mode and receive mode, whereas a full-duplex cable/port has two seperate physical mediums allowing it to transmit and receive at the same time thus removing the need for any collision detection. You'll most likely be using the 1000Base-T standard (802.3ab, the twisted-pair copper standard for 1000Mbs as opposed to 1000Base-X, the fiber optic standard for 1000Mbs) which only operates on full-duplex.
+
+The frame is transmitted 8 bits at a time over these wires, but they're encoded,
+so if you wanted to parse these bits yourself it's a little bit more complicated.
+We'll discuss more about this in the PMA section.
+
+\subsection{Physical Medium Attachment (PMA)}
+You can find all the details in the 802.3z standard in chapter 40.
+
+
+\subsection{Physical Coding Sublayer (PCS)}
+You can find all the details in the 802.3z standard in chapter 40.
 
 \chapter{Basic Approaches}
 
-\chapter{Ethernet PL Guide}
+
+\chapter{Ethernet PL IP Guide}
 
 \chapter{PetaLinux Networking}
 

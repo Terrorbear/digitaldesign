@@ -1,9 +1,13 @@
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
 \BOOKMARK [0][-]{chapter.2}{Ethernet Background}{}% 2
-\BOOKMARK [0][-]{chapter.3}{Basic Approaches}{}% 3
-\BOOKMARK [0][-]{chapter.4}{Ethernet PL Guide}{}% 4
-\BOOKMARK [0][-]{chapter.5}{PetaLinux Networking}{}% 5
-\BOOKMARK [0][-]{chapter.6}{Alternate Approaches}{}% 6
-\BOOKMARK [0][-]{chapter.7}{More on PL}{}% 7
-\BOOKMARK [0][-]{chapter.8}{Miscellaneous}{}% 8
-\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 9
+\BOOKMARK [1][-]{section.2.1}{Logical Link Layer}{chapter.2}% 3
+\BOOKMARK [2][-]{subsection.2.1.1}{Ethernet Frame}{section.2.1}% 4
+\BOOKMARK [0][-]{chapter.3}{Basic Approaches}{}% 5
+\BOOKMARK [0][-]{chapter.4}{Ethernet PL IP Guide}{}% 6
+\BOOKMARK [0][-]{chapter.5}{PetaLinux Networking}{}% 7
+\BOOKMARK [0][-]{chapter.6}{Alternate Approaches}{}% 8
+\BOOKMARK [0][-]{chapter.7}{More on PL}{}% 9
+\BOOKMARK [0][-]{chapter.8}{Miscellaneous}{}% 10
+\BOOKMARK [1][-]{section.8.1}{Personal Statements}{chapter.8}% 11
+\BOOKMARK [2][-]{subsection.8.1.1}{Dale Zhang}{section.8.1}% 12
+\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 13
