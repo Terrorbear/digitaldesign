@@ -1,0 +1,98 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{IP_subsystems}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Xilinx}{X.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{X1}
+  \strng{fullhash}{X1}
+  \field{sortinit}{X}
+  \field{title}{Designing IP Subsystems Using IP Integrator}
+  \verb{url}
+  \verb http://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_4/ug9
+  \verb 94-vivado-ip-subsystems.pdf
+  \endverb
+  \field{year}{2015}
+\endentry
+
+\entry{IP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Xilinx}{X.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{X1}
+  \strng{fullhash}{X1}
+  \field{sortinit}{X}
+  \field{title}{Designing with IP}
+  \verb{url}
+  \verb http://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_4/ug8
+  \verb 96-vivado-ip.pdf
+  \endverb
+  \field{year}{2015}
+\endentry
+
+\entry{ultrafast}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Xilinx}{X.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{X1}
+  \strng{fullhash}{X1}
+  \field{sortinit}{X}
+  \field{title}{UltraFast Design Methodology Guide for the Vivado Design Suite}
+  \verb{url}
+  \verb http://www.xilinx.com/support/documentation/sw_manuals/ug949-vivado-des
+  \verb ign-methodology.pdf
+  \endverb
+  \field{year}{2015}
+\endentry
+
+\entry{vivado_tut}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Xilinx}{X.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{X1}
+  \strng{fullhash}{X1}
+  \field{sortinit}{X}
+  \field{title}{Vivado Design Suite Tutorial}
+  \verb{url}
+  \verb http://www.xilinx.com/support/documentation/sw_manuals/xilinx2015_4/ug8
+  \verb 88-vivado-design-flows-overview-tutorial.pdf
+  \endverb
+  \field{year}{2015}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput
