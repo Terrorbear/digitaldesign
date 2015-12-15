@@ -22,6 +22,7 @@
 % For citations and urls in captions
 \usepackage{caption}
 
+\usepackage{listings}
 
 \title{
   {Ethernet on the Zynq ZC706 \vspace{0.2in}}\\
@@ -34,6 +35,8 @@
 
 \begin{document}
 \maketitle
+
+\tableofcontents
 
 \chapter{Introduction}
 This paper is a guide to start building ethernet on the Zynq ZC706 board. It was originally written as the final project for a 18-545 project which didn't complete because they struggled to build an ethernet adapter in programmable logic and have it properly communicate with the Processing System. The intention of this paper is to aid future groups in completing an ethernet adapter, as well as providing the necessary background and deterring groups from fruitless avenues. This guide will expect a very minimal understanding of Vivado because most students in 18-545 have had very limited exposure to Vivado. We will attempt to provide the pertinent references as needed.
@@ -166,19 +169,41 @@ insert your own RTL after the TEMAC.
 The Vivado IP catalog thankfully has all the parts of the PHY you'll need. You'll have to be comfortable with using and making your own IP to work well in Vivado. Xilinx already has implementations of the PCS, PMA, MAC, etc. and they're in blocks which they call their Intellectual Property (IP). You can find the documentation on all of these on their website (there is a button to open them directly in vivado, but that button doesn't do anything. Get used to this). Their IP blocks communicate via a protocol called AXI4. You'll want to skim through The Zynq Book \cite{the_zynq_book} to understand AXI well. In general The Zynq Book doesn't go enough into detail, but for AXI it is still alright.
 
 \section{Modifying the pipeline}
-This setup they provide will move the whole data frame into memory. So the easiest place to add your own modifications is to the AXI-stream connect after the TEMAC and before the DMA. The modification we worked on was adding a filter to the output AXI of the TEMAC. Vivado_HLS is a high level synthesis tool that allows you to write C and C++, and it'll be compiled down to an HDL which is packaged inside of an IP. This IP will be added to your IP catalog so you can select it inside of Vivado. The function arguments are your input and output ports. You can set the ports to have difference interfaces using PRAGMAs, but @TODO
+This setup they provide will move the whole data frame into memory. So the easiest place to add your own modifications is to the AXI-stream connect after the TEMAC and before the DMA. The modification we worked on was adding a filter to the output AXI of the TEMAC. Vivado\_HLS is a high level synthesis tool that allows you to write C and C++, and it'll be compiled down to an HDL which is packaged inside of an IP. This IP will be added to your IP catalog so you can select it inside of Vivado.
 
-If you want one of your ports to connect to the processing system, leave it unconnected in the block diagram, and add it to the address editor. Vivado will set up the connections automatically.
+The greatest piece of documentation ever written by Xilinx was their HLS tutorial \cite{hls_tut}. This document is actually helpful, and chapter 2 and 4 will quickly get you started on making your own IP. The essentials are:
+\begin{itemize}
+\item Your inputs and outputs are your function arguments like in an HDL.
+\item You'll need to make your packet input and output ports AXI-stream ports.
+  \begin{itemize}
+    \item Select the Directive tab on the right panel, and right click your top function to \texttt{insert directive}.
+    \item Choose the Interface directive and choose the type ap\_ctrl\_none. Now your IP won't have any control registers and it'll just always be operating.
+    \item Do the same for your input and output ports, but instead of ap\_ctrl\_none, choose axis.
+    \item This however doens't actually change your ports to AXI-stream.
+    \item You'll need to {\lstinline{#include ``hls_stream.h''}} to get the stream class. Ctrl-click that file name to jump to the file.
+    \item You'll need to {\lstinline{#include ``ap_axi_sdata.h''}} to get the packet struct. Again, Ctrl-click that file name to jump to it.
+    \item Combine these two to set your input port to {\lstinline{stream<axis> in_stream}} where in\_stream is your function argument and axis is the struct you defined using their ap\_axiu constructor.
+    \end{itemize}
+  \item Now you can use {\lstinline{in_stream >> x}} to get a single axis packet out and into a variable x.
+  \item Likewise you can write to stream using {\lstinline{x >> out_stream}}.
+  \item We have an example filter that can be found here: \url{https://github.com/Terrorbear/digitaldesign/blob/master/filter.cpp}
+    \item If you want one of your ports to connect to the processing system, leave it unconnected in the block diagram, and add it to the address editor. Vivado will set up the connections automatically.
+\end{itemize}
+
+After all of this, you should something simple working in HLS, and now you can package the IP and add the directory to the Vivado IP catalog to insert your IP into your block diagrams.
 
 \chapter{PetaLinux Networking}
 
 \chapter{Alternate Approaches}
+\section{Building our own Ethernet}
 The first approach we attempted was to build our own ethernet system. From the background chapter, I hope I've gotten across the difficulty of doing so. I thought I could just watch the line for a preamble, and start reading the bits after a start of frame delimiter. The more I read and researched the more layers of complexity I realized existed ontop of such a seemlingly simple operation. Then apart from just reading bits, transmitting and the other protocols and interfaces to conform to made this infeasible.
 
+\section{Packet Processing Language}
 So we then looked more into a paper \cite{pp} I found describing a high level language Xilinx created to compile down into an HDL. This looked promising, but after a few email correspondences with Gordon Brebner, one of the authors of the paper, we learned that the packet processing language (PP) was discontinued by Xilinx. It was split into two, and the lower level portions became SDNet, a proprietary development environment made for building networking technologies. Unfortunately a license for it is very expensive, and it'd also mean we'd have to learn another tool besides Vivado.
 The higher level half turned into an open source project called the P4 language.
 This compiles a high level language into a number of target languages. Although Gordon was very enthuastic and helpful when it came to this, the P4 language is still very early in it's infancy and we knew there was going to be very little support. The other problem was that targetting Verilog wasn't complete yet, and we'd have to target SDNet anyways. Perhaps in the future, this would be more viable.
 
+\section{Using Ethernet IP}
 I then tried to use their IP myself, and I tried to figure out a viable block design from their documentation. You can find my block diagram in Figure \ref{fig:my_design}.
 As far as I can tell, the clocking, the resets, and the axi connections are correct.
 The processing system is connected on the correct EMIO ports and memory mapped IO are all set in the address editor, and while this design was verified, it could not synthesize.
@@ -196,6 +221,7 @@ they weren't ever useful.
 \label{fig:my_design}
 \end{figure}
 
+\section{Packet Redirection Wiki}
 Another wiki guide we tried to follow was \textit{Zynq-7000 AP SoC - Performance - Ethernet Packet Inspection - Linux - Redirecting Packets to PL and Cache Tech Tip} \cite{redirect}. This one looked promising because we could have redirected traffic into PL and done all of our network analysis in hardware. However, it seems to be missing a lot of parts, and there were more edits to this wiki after we first discovered it. So perhaps in the future this wiki will be more useful. But at the time, some file headers were for the Kintex, some for Zynq, and some for Virtex. So it looked like an incomplete tech tip.
 
 \chapter{Lessons Learned}
