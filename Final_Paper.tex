@@ -89,7 +89,7 @@ This section will focus on the attempts we made to implement the software-firmwa
 The Zynq Boot Setup Guide linked above demonstrates the way to format bootable SD cards. You need to create 2 partitions, \texttt{boot} and \texttt{root}, and copy 2 files, \texttt{BOOT.bin} and \texttt{image.ub}, onto the 'boot' partition, but the partition table needs to be configured in a specific way using fdisk commands. The relevant part of the guide is the section under ``SD Boot''; ignore the sections that describe JTAG and QSPI booting. You can find relevant precompiled \texttt{BOOT.bin} and \texttt{image.ub} files in the XAPP1082 software release: \texttt{\$XAPP\_HOME/ready\_to\_test/pl\_eth\_noCso}.
 
 \subsection{Building XAPP1082's PetaLinux Configuration}
-The version of the PetaLinux Tools that we used wouldn't install project properly on a 64-bit virtual machine because of issues with 32-bit library support that we were unable to resolve. However, the Xilinx SDK, which is required to create the boot image after the kernel has been compiled, only supports 64-bit versions of Linux. We were able to get around this by creating a 32-bit VM for creating the project and building the kernel, and a separate 64-bit VM for creating the boot image.
+The version of the PetaLinux Tools that we used wouldn't install properly on a 64-bit virtual machine because of issues with 32-bit library support that we were unable to resolve. However, the Xilinx SDK, which is required to create the boot image after the kernel has been compiled, only supports 64-bit versions of Linux. We were able to get around this by creating a 32-bit VM for creating the project and building the kernel, and a separate 64-bit VM for creating the boot image.
 
 \subsubsection{Setting up the 32-bit VM}
 For Ubuntu, the PetaLinux Tools Reference Guide required the following packages to be installed:
@@ -105,7 +105,7 @@ To set up the 64-bit VM, you need to install all the same packages as the 32 bit
 In an attempt to diagnose the main problem that we encountered, we needed to introduce a change to the Xilinx ethernet driver so that it would print debug information. We did this by text-editing the patch file that adds driver support to the kernel, although there are many other ways of modifying the PetaLinux configuration and software that are described in more detail in the documentation. If there is no need to customize PetaLinux in any way, precompiled images are provided in the XAPP1082 software release, and the PetaLinux Tools don't need to be used.
 
 \subsection{Connecting to the UART of the Zynq ZC706}
-A link is provided in the hyperlink section of this chapter to the driver download page for the ZC706's UART. After the drivers are installed, remote terminal software can be used to communicate with the ZC706. We found it easiest to use \texttt{screen}. If the UART shows up as \texttt{/dev/ttyUSB0}, the ZC706 can be connected to by running \texttt{screen /dev/ttyUSB0 115200}. Permissions issues can often prevent reading from device files so it's important to ensure that permissions are set properly.
+The driver download page for the ZC706 can be found in the link section. After the drivers are installed, remote terminal software can be used to communicate with the ZC706. We found it easiest to use \texttt{screen}. If the UART shows up as \texttt{/dev/ttyUSB0}, the ZC706 can be connected to by running \texttt{screen /dev/ttyUSB0 115200}. Permissions issues can often prevent reading from device files so it's important to ensure that permissions are set properly.
 
 \subsection{PetaLinux Networking Setup}
 \subsubsection{SFP Ethernet Port}
@@ -139,6 +139,80 @@ The default gateway can be set by running:
 \newline If your configuration works, you should be able to connect to the internet. 
 
 \subsection{Bugs and Roadblocks}
+The bug that we were unable to overcome in our project was that Petalinux was unable to successfully set the link up for the SFP port interface. The Xilinx Wiki advised us to make sure we saw the message
+\newline \texttt{eth1: XAxiEthernet: PHY Link carrier restored.}
+\newline before using the SFP interface. We never encountered this message. Here is the part of the driver code that triggers this message:
+\begin{lstlisting}[language=C]
+if (phy_carrier) {
+  printk(KERN_INFO
+         "%s: XAxiEthernet: PHY Link carrier restored.\n",
+         dev->name);
+  netif_carrier_on(dev);
+  set_mac_speed(lp);
+}
+\end{lstlisting}
+The variable \texttt{phy\_carrier} is set to the value of \texttt{linkup} in the \texttt{get\_phy\_status} function:
+\begin{lstlisting}[language=C]
+static int get_phy_status(struct net_device *dev, DUPLEX * duplex, int *linkup)
+{
+	struct axienet_local *lp = (struct axienet_local *) netdev_priv(dev);
+	u32 reg1, reg2;
+
+	//reg1 = axienet_mdio_read_local(lp, lp->gmii_addr, MII_BMCR);
+	reg1 = axienet_mdio_read(lp->mii_bus, lp->gmii_addr, MII_BMCR);
+	*duplex = FULL_DUPLEX;
+
+	//reg2 = axienet_mdio_read_local(lp, lp->gmii_addr, MII_BMSR);
+	reg2 = axienet_mdio_read(lp->mii_bus, lp->gmii_addr, MII_BMSR);
+	*linkup = (reg2 & BMSR_LSTATUS) != 0;
+
+	//printk(KERN_ERR "get_phy_status: BMCR=0x%x, BMSR=0x%x, duplex=%d, linkup=%d\n", reg1, reg2, *duplex, *linkup);
+	return 0;
+}
+\end{lstlisting}
+Reading the driver code showed that the status and control values that the SFP device was providing to the MII interface didn't indicate that the Ethernet link was up. We modified the driver code to uncomment the call to \texttt{printk}, which showed us that the MII control register value was always 0x1140, while the status register was always 0x01c8. The values are bitmasks that we interpreted the following way:
+\begin{verbatim}
+MII Basic Mode Status Register
+Bit 0: Extended MII registers available
+Bit 1: Jabber detected (sticky)
+Bit 2: Link is up (sticky)
+Bit 3: Capable of auto-negotiation
+Bit 4: Remote fault detected
+Bit 5: Auto-negotiation complete
+Bits 6-A: unused
+Bit B: Capable of 10mbps half-duplex
+Bit C: Capable of 10mbps full-duplex
+Bit D: Capable of 100mbps half-duplex
+Bit E: Capable of 100mbps full-duplex
+Bit F: Capable of 100mbps 4k packets
+
+Value we get from ZC706: 0x01c8
+
+ F E D C B A 9 8 7 6 5 4 3 2 1 0
+|0|0|0|0|0|0|0|1|1|1|0|0|1|0|0|0|
+
+MII Basic Mode Control Register
+Bits 0-6: unused
+Bit 7: Collision test
+Bit 8: Full duplex
+Bit 9: Autonegotiation restart
+Bit A: Disconnect PHY from MII
+Bit B: Power down PHY
+Bit C: Enable autonegotiation
+Bit D: Select 100mbps
+Bit E: TXD loopback bits
+Bit F: Reset
+
+Value we get from ZC706: 0x1140
+
+ F E D C B A 9 8 7 6 5 4 3 2 1 0
+|0|0|0|1|0|0|0|1|0|1|0|0|0|0|0|0|
+\end{verbatim}
+
+Some of these reported settings and status bits make sense, but some do not; no status bit is set that says that the PHY is able of any particular Ethernet link speed, but at the same time both the status and control registers say that the device is configured for autonegotiation.
+
+This was as far as we were able to get with debugging this issue. Something we would have wanted to test was whether the SFP port acted differently with a different module. The XAPP1082 PDF specified that it was tested with a ``HP 378928-B21 Cisco Gigabit Ethernet RJ45 SFP Module,'' whereas our SFP module was a different brand and model.
+
 \subsection{Other Notes}
 \begin{itemize}
 \item Make sure jumper J17 is set (see XAPP1082 PDF)
