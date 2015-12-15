@@ -3,18 +3,19 @@
 \BOOKMARK [0][-]{chapter.3}{Basic Approaches}{}% 3
 \BOOKMARK [0][-]{chapter.4}{Ethernet PL Guide}{}% 4
 \BOOKMARK [0][-]{chapter.5}{PetaLinux Networking}{}% 5
-\BOOKMARK [1][-]{section.5.1}{Background Information}{chapter.5}% 6
-\BOOKMARK [2][-]{subsection.5.1.1}{Documentation and Guides}{section.5.1}% 7
-\BOOKMARK [2][-]{subsection.5.1.2}{Supplies}{section.5.1}% 8
-\BOOKMARK [1][-]{section.5.2}{Using Petalinux}{chapter.5}% 9
-\BOOKMARK [2][-]{subsection.5.2.1}{Creating Boot Media}{section.5.2}% 10
-\BOOKMARK [2][-]{subsection.5.2.2}{Using XAPP1082's Development Setup on Ubuntu}{section.5.2}% 11
-\BOOKMARK [2][-]{subsection.5.2.3}{Connecting to the UART of the ZYNQ ZC706}{section.5.2}% 12
-\BOOKMARK [2][-]{subsection.5.2.4}{Petalinux Networking Setup}{section.5.2}% 13
-\BOOKMARK [2][-]{subsection.5.2.5}{Bugs and Roadblocks}{section.5.2}% 14
-\BOOKMARK [0][-]{chapter.6}{Alternate Approaches}{}% 15
-\BOOKMARK [0][-]{chapter.7}{More on PL}{}% 16
-\BOOKMARK [0][-]{chapter.8}{Miscellaneous}{}% 17
-\BOOKMARK [1][-]{section.8.1}{Personal Statements}{chapter.8}% 18
-\BOOKMARK [2][-]{subsection.8.1.1}{Dale Zhang}{section.8.1}% 19
-\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 20
+\BOOKMARK [1][-]{section.5.1}{Relevant Links}{chapter.5}% 6
+\BOOKMARK [1][-]{section.5.2}{Background Information}{chapter.5}% 7
+\BOOKMARK [2][-]{subsection.5.2.1}{Documentation and Guides}{section.5.2}% 8
+\BOOKMARK [2][-]{subsection.5.2.2}{Supplies}{section.5.2}% 9
+\BOOKMARK [1][-]{section.5.3}{Using Petalinux}{chapter.5}% 10
+\BOOKMARK [2][-]{subsection.5.3.1}{Creating Boot Media}{section.5.3}% 11
+\BOOKMARK [2][-]{subsection.5.3.2}{Using XAPP1082's Development Setup on Ubuntu}{section.5.3}% 12
+\BOOKMARK [2][-]{subsection.5.3.3}{Connecting to the UART of the ZYNQ ZC706}{section.5.3}% 13
+\BOOKMARK [2][-]{subsection.5.3.4}{Petalinux Networking Setup}{section.5.3}% 14
+\BOOKMARK [2][-]{subsection.5.3.5}{Bugs and Roadblocks}{section.5.3}% 15
+\BOOKMARK [0][-]{chapter.6}{Alternate Approaches}{}% 16
+\BOOKMARK [0][-]{chapter.7}{More on PL}{}% 17
+\BOOKMARK [0][-]{chapter.8}{Miscellaneous}{}% 18
+\BOOKMARK [1][-]{section.8.1}{Personal Statements}{chapter.8}% 19
+\BOOKMARK [2][-]{subsection.8.1.1}{Dale Zhang}{section.8.1}% 20
+\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 21
