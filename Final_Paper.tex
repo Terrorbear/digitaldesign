@@ -23,9 +23,9 @@
 \definecolor{codebgnd}{rgb}{0.9, 0.9, 0.9}
 \usepackage{listings}
 \lstset{
-  language=bash,
-  breaklines = true,
-  backgroundcolor = \color{codebgnd}
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  backgroundcolor=\color{codebgnd}
 }
 
 \title{
@@ -55,54 +55,89 @@ That being said, going through Lab 2 in \textit{Vivado Design Suite Tutorial} \c
 \chapter{PetaLinux Networking}
 \subsection{Introduction}
 This section will focus on the attempts we made to implement the software-firmware stack that Xilinx provides through their application notice XAPP1082 and through a guide on the Xilinx wiki. This involves creating a bootable SD card containing a copy of PetaLinux, Xilinx's embedded Linux distribution, that is patched to support communicating over the SFP Ethernet port, and flashing the FPGA fabric with a corresponding bitstream that implements the hardware Ethernet support. Although our eventual goal was to modify the kernel and firmware to support Ethernet traffic analysis, we ran into bugs that we were unable to fully diagnose and solve.
-\subsection{Hyperlinks to Relevant Documentation}
+\subsection{Relevant Hyperlinks and Documentation}
 \begin{itemize}
   \item \href{http://www.xilinx.com/support/documentation/application_notes/xapp1082-zynq-eth.pdf}{XAPP1082 PDF}
   \item Xilinx Wiki Guides:
     \begin{itemize}
     \item \href{http://www.wiki.xilinx.com/Zynq+PL+Ethernet}{Zynq Ethernet Guide}
-    \item \href{http://www.wiki.xilinx.com/Prepare+Boot+Medium}{Zynq BootSetup Guide}
+    \item \href{http://www.wiki.xilinx.com/Prepare+Boot+Medium}{Zynq Boot Setup Guide}
     \end{itemize}
   \item \href{http://www.xilinx.com/support/documentation/boards_and_kits/zc706/ug954-zc706-eval-board-xc7z045-ap-soc.pdf}{Zynq ZC706 User Guide}
   \item \href{http://www.xilinx.com/support/documentation/sw_manuals/petalinux2014_4/ug1144-petalinux-tools-reference-guide.pdf}{PetaLinux Tools Reference Guide}
   \item \href{http://www.syfer.com.au/assets/s502-00000-a.pdf}{Installation Guide for PetaLinux 2014.4 (Not by Xilinx)}
+  \item \href{http://www.silabs.com/products/mcu/Pages/USBtoUARTBridgeVCPDrivers.aspx}{Drivers for Zynq ZC706 UART}
 \end{itemize}
 \subsection{Supplies}
 \begin{itemize}
   \item Hardware: 
     \begin{itemize}
     \item It's necessary to be able to connect to a wired Ethernet connection and write SD cards with the computer you are using for development.
-    \item If you want to switch between different copies of Petalinux, it's convenient to have multiple SD cards, so you don't have to reflash them repeatedly. The copy of Petalinux we used was only ~200MB so large storage capacity is unneccessary.
+    \item If you want to switch between different copies of PetaLinux, it's convenient to have multiple SD cards, so you don't have to reflash them repeatedly. The copy of PetaLinux we used was only ~200MB so large storage capacity is unneccessary.
     \item It's helpful to have an Ethernet switch or router so you can test the device without needing access to the full Internet.
     \end{itemize}
   \item Software:
     \begin{itemize}
-    \item I installed the Petalinux tools on two Ubuntu LTS virtual machines. You should have virtualization software and enough disk space available on your computer for 2 virtual machines.
+    \item I installed the PetaLinux tools on two Ubuntu LTS virtual machines. You should have virtualization software and enough disk space available on your computer for 2 virtual machines.
     \item We also were able to use lab computers that were configured to use the version of Vivado that corresponded to the version of XAPP1082 we used.
-    \item The specific versions that our project used were XAPP1082 version 3, Petalinux and Vivado version 2014.4, Xubuntu 14.04 LTS for installing the Petalinux tools. Our lab machines ran RHEL.
+    \item The specific versions that our project used were XAPP1082 version 3, PetaLinux and Vivado version 2014.4, Xubuntu 14.04 LTS for installing the PetaLinux tools. Our lab machines ran RHEL.
     \end{itemize}
 \end{itemize}
-\section{Using Petalinux}
+
+\section{Using PetaLinux}
 \subsection{Creating Boot Media}
 The Zynq Boot Setup Guide linked above demonstrates the way to format bootable SD cards. You need to create 2 partitions, \texttt{boot} and \texttt{root}, and copy 2 files, \texttt{BOOT.bin} and \texttt{image.ub}, onto the 'boot' partition, but the partition table needs to be configured in a specific way using fdisk commands. The relevant part of the guide is the section under ``SD Boot''; ignore the sections that describe JTAG and QSPI booting. You can find relevant precompiled \texttt{BOOT.bin} and \texttt{image.ub} files in the XAPP1082 software release: \texttt{\$XAPP\_HOME/ready\_to\_test/pl\_eth\_noCso}.
-\subsection{Building XAPP1082's Petalinux Configuration}
-The version of the Petalinux Tools that we used wouln't install project properly on a 64-bit virtual machine because of issues with 32-bit library support that we were unable to resolve. However, the Xilinx SDK, which is required to create the boot image after the kernel has been compiled, only supports 64-bit versions of Linux. We were able to get around this by creating a 32-bit VM for creating the project and building the kernel, and a separate 64-bit VM for creating the boot image.
+
+\subsection{Building XAPP1082's PetaLinux Configuration}
+The version of the PetaLinux Tools that we used wouldn't install project properly on a 64-bit virtual machine because of issues with 32-bit library support that we were unable to resolve. However, the Xilinx SDK, which is required to create the boot image after the kernel has been compiled, only supports 64-bit versions of Linux. We were able to get around this by creating a 32-bit VM for creating the project and building the kernel, and a separate 64-bit VM for creating the boot image.
+
 \subsubsection{Setting up the 32-bit VM}
-For Ubuntu, the Petalinux Tools Reference Guide required the following packages to be installed: 
+For Ubuntu, the PetaLinux Tools Reference Guide required the following packages to be installed:
+\newline \texttt{tofrodos iproute gawk gcc git-core make net-tools libncurses5-dev tftpd zlib1g-dev flex bison}
 
-\texttt{tofrodos iproute gawk gcc git-core make net-tools libncurses5-dev tftpd zlib1g-dev flex bison}
-
-The Petalinux Tools are distributed as a self-extracting archive/installer. The Xilinx Wiki Zynq Ethernet Guide contains a download link. Both the Petalinux Tools and the XAPP1082 software release should be extracted. The provided shell scripts help to automate steps that are described in the Wiki guide. The directories on the first lines should be modified to reflect the user's configuration.
+The PetaLinux Tools are distributed as a self-extracting archive/installer. The Xilinx Wiki Zynq Ethernet Guide contains a download link. Both the PetaLinux Tools and the XAPP1082 software release should be extracted. The provided shell scripts help to automate steps that are described in the Wiki guide. The directories on the first lines should be modified to reflect the user's configuration.
 
 
 \subsubsection{Setting up the 64-bit VM}
-To set up the 64-bit VM, you need to install all the same packages as the 32 bit VM needs. In addition to extracting the Petalinux installer, you also need to install the Xilinx SDK that corresponds to your version of Petalinux. After you have finished configuring and building the project on the 32-bit VM, you can copy the \texttt{xapp1082\_pl\_eth} project directory to the 64-bit VM, then use the provided shell script to create a bootable image (more detail is available in the wiki guide). The required files for creating a bootable SD card will be in the project directory in the subdirectory \texttt{images/linux}.
+To set up the 64-bit VM, you need to install all the same packages as the 32 bit VM needs. In addition to extracting the PetaLinux installer, you also need to install the Xilinx SDK that corresponds to your version of PetaLinux. After you have finished configuring and building the project on the 32-bit VM, you can copy the \texttt{xapp1082\_pl\_eth} project directory to the 64-bit VM, then use the provided shell script to create a bootable image (more detail is available in the wiki guide). The required files for creating a bootable SD card will be in the project directory in the subdirectory \texttt{images/linux}.
 
-\subsubsection{Note on Petalinux Setup}
-In an attempt to diagnose the main problem that we encountered, we needed to introduce a change to the Xilinx ethernet driver so that it would print debug information. We did this by text-editing the patch file that adds driver support to the kernel, although there are many other ways of modifying the Petalinux configuration and software that are described in more detail in the documentation. If there is no need to customize Petalinux in any way, precompiled images are provided in the XAPP1082 software release, and the Petalinux Tools don't need to be used.
+\subsubsection{Note on PetaLinux Setup}
+In an attempt to diagnose the main problem that we encountered, we needed to introduce a change to the Xilinx ethernet driver so that it would print debug information. We did this by text-editing the patch file that adds driver support to the kernel, although there are many other ways of modifying the PetaLinux configuration and software that are described in more detail in the documentation. If there is no need to customize PetaLinux in any way, precompiled images are provided in the XAPP1082 software release, and the PetaLinux Tools don't need to be used.
 
-\subsection{Connecting to the UART of the ZYNQ ZC706}
-\subsection{Petalinux Networking Setup and CMU Netreg}
+\subsection{Connecting to the UART of the Zynq ZC706}
+A link is provided in the hyperlink section of this chapter to the driver download page for the ZC706's UART. After the drivers are installed, remote terminal software can be used to communicate with the ZC706. We found it easiest to use \texttt{screen}. If the UART shows up as \texttt{/dev/ttyUSB0}, the ZC706 can be connected to by running \texttt{screen /dev/ttyUSB0 115200}. Permissions issues can often prevent reading from device files so it's important to ensure that permissions are set properly.
+
+\subsection{PetaLinux Networking Setup}
+\subsubsection{SFP Ethernet Port}
+As described in the Xilinx Wiki guide, to activate the interface for the SFP Ethernet port, you should run
+\newline \texttt{insmod /lib/modules/3.17.0-xilinx-<kernel\_build\_version>/kernel/}
+\newline \texttt{drivers/net/ethernet/xilinx/xilinx\_axienet\_main.ko}
+\newline This loads the kernel module that enables the SFP Ethernet interface.
+\newline To activate the interface, run
+\newline \texttt{ifconfig eth1 up x.x.x.x}
+\newline where \texttt{x.x.x.x} is the IP address assigned to the SFP interface.
+\newline You should see the following two messages:
+\newline \texttt{eth1: XAXIEthernet: PHY Link carrier lost.}
+\newline \texttt{eth1: XAXIEthernet: PHY Link carrier restored.}
+\newline If the second message does not appear, that means that Petalinux is unable to set the link up. This is the problem that our team encountered that we were unable to move past.
+
+\subsubsection{Configuration}
+Unfortunately, the tools that are included by default in the provided PetaLinux configuration are limited; in particular, there is no DHCP support. In order to set up an interface, you will need to know you're device's:
+\begin{itemize}
+\item Assigned IP address
+\item Broadcast address
+\item Network mask
+\item Default gateway
+\end{itemize}
+The default gateway can be set by running:
+\newline \texttt{route add default gateway x.x.x.x}
+\newline You can set the IP address and activate the interface by running:
+\newline \texttt{ifconfig eth0 up x.x.x.x}
+\newline Use ifconfig to add the netmask and broadcast address:
+\newline \texttt{ifconfig eth0 broadcast x.x.x.x}
+\newline \texttt{ifconfig eth0 netmask x.x.x.x}
+\newline If your configuration works, you should be able to connect to the internet. 
+
 \subsection{Bugs and Roadblocks}
 \subsection{Other Notes}
 \begin{itemize}
@@ -111,41 +146,14 @@ In an attempt to diagnose the main problem that we encountered, we needed to int
 \subsection{Code Listing}
 \subsubsection{Shell Scripts for the 32-bit VM}
 \texttt{1\_create\_project\_config\_kernel.sh}
-\begin{lstlisting}
-#!/bin/bash
-XAPP_HOME=~/545/xapp1082_2014_4
-source ~/545/petalinux-v2014.4-final/settings.sh
+\lstinputlisting{shellscripts/1_create_project_config_kernel.sh}
 
-cd $PETALINUX
-petalinux-create -t project -s $XAPP_HOME/software/petalinux/bsp/xapp1082_pl_eth.bsp
-cd $PETALINUX/xapp1082_pl_eth
-petalinux-config
-\end{lstlisting}
 \texttt{2\_apply\_patch\_build\_kernel.sh}
-\begin{lstlisting}
-#!/bin/bash
-XAPP_HOME=~/545/xapp1082_2014_4
-source ~/545/petalinux-v2014.4-final/settings.sh
-
-cd $PETALINUX/xapp1082_pl_eth/build/linux/kernel/download/linux-xlnx/
-git am $XAPP_HOME/software/patch/0001-ethernet-xilinx-Add-XAPP1082-support.patch
-cd $PETALINUX/xapp1082_pl_eth
-cp subsystems/linux/configs/kernel/xapp1082_defconfig subsystems/linux/configs/kernel/config
-petalinux-build -v
-\end{lstlisting}
+\lstinputlisting{shellscripts/2_apply_patch_build_kernel.sh}
 
 \subsubsection{Shell Script for the 64-bit VM}
 \texttt{3\_create\_boot\_image.sh}
-\begin{lstlisting}
-#!/bin/bash
-source ~/545/petalinux-v2014.4-final/settings.sh
-source /opt/Xilinx/SDK/2014.4/settings64.sh
-XAPP1082_PL_ETH_PROJECT_DIRECTORY=$PETALINUX/xapp1082_pl_eth
-
-cd $XAPP1082_PL_ETH_PROJECT_DIRECTORY/images/linux
-petalinux-package --boot --fsbl=zynq_fsbl.elf  --fpga=$PETALINUX/xapp1082_pl_eth/subsystems/linux/hw-description/pl_eth_sfp.bit --u-boot
-\end{lstlisting}
-
+\lstinputlisting{shellscripts/3_create_Boot_image.sh}
 \chapter{Alternate Approaches}
 
 \chapter{More on PL}
