@@ -46,7 +46,7 @@
 \maketitle
 
 \chapter{Introduction}
-This paper is a guide to start building ethernet on the Zynq ZC706 board. It was originally written as the final project for a 18-545 project which didn't complete because they struggled to build an ethernet adapter in programmable logic and have it properly communicate with the Processing System. The intention of this paper is to aid future groups in completing an ethernet adapter, as well as providing the necessary background and deterring groups from fruitless avenues. This guide will expect a very minimal understanding of Vivado because most students in 18-545 have had very limited exposure to Vivado. We will attempt to provide the pertinent references as needed.
+This report is a guide to start building ethernet on the Zynq ZC706 board. It was originally written as the final project for a 18-545 project which our team didn't complete because we were unable to build an ethernet adapter in programmable logic and have it properly communicate with the Processing System. The intention of this report is to aid future groups in completing an ethernet adapter, as well as providing the necessary background and deterring groups from fruitless avenues. This guide expects a minimal understanding of Vivado because most students in 18-545 have had limited exposure to it. We will attempt to provide the pertinent references as needed.
 
 That being said, going through Lab 2 in \textit{Vivado Design Suite Tutorial} \cite{vivado_tut} will probably be the fastest way to understand the work flow. Also, chapter 2 and chapter 4 of \textit{UltraFast Design Methodology Guide for the Vivado Design Suite} \cite{ultrafast} will be superbly helpful in learning to use Vivado, especially for using Intellectual Property (IP) in Vivado. Finally, if you still want more details on using IP, you can refer to the Vivado guide on \textit{Designing with IP} \cite{IP} and \textit{Designing IP Subsystems Using IP Integrator} \cite{IP_subsystems}. If you'd like more information on Vivado in general, refer to the \textit{Getting Started} \cite{starter} guide and the \textit{Designs Flows Overview} \cite{design_flows}.
 
@@ -74,7 +74,7 @@ In Figure \ref{fig:eframe} you can see the basic format. However, there is anoth
 
 The layer one bit sequence is what you'd expect to find on the wire, and the layer two format is what you'd expect to reach the operating system.
 
-If there are other headers you're expecting, they'd be in the beginning of the payload. All information used by higher network layers would be found there as well. The standard maximum transmission unit is 1500 bytes, so if you're making a large download, it' be broken up into roughly 1500 byte chunks, each sent according to some highler level protocol like TCP or UDP and your application will receive them in these chunks.
+If there are other headers you're expecting, they'd be in the beginning of the payload. All information used by higher network layers would be found there as well. The standard maximum transmission unit is 1500 bytes, so if you're making a large download, it' be broken up into roughly 1500 byte chunks, each sent according to some higher level protocol like TCP or UDP and your application will receive them in these chunks.
 
 Ethernet frames are sent across Cat-5 or Cat-6 cables, and you'll often see the cables referred to as full-duplex or half-duplex. Duplex refers to the two directions of traffic, tranmissions and receptions. A half-duplex cable/port alternates between transmit mode and receive mode, whereas a full-duplex cable/port has two seperate physical mediums allowing it to transmit and receive at the same time thus removing the need for any collision detection. You'll most likely be using the 1000Base-T standard (802.3ab, the twisted-pair copper standard for 1000Mbs as opposed to 1000Base-X, the fiber optic standard for 1000Mbs) which only operates on full-duplex.
 
@@ -193,7 +193,6 @@ This section will focus on the attempts we made to implement the software-firmwa
     \end{itemize}
   \item \href{http://www.xilinx.com/support/documentation/boards_and_kits/zc706/ug954-zc706-eval-board-xc7z045-ap-soc.pdf}{Zynq ZC706 User Guide}
   \item \href{http://www.xilinx.com/support/documentation/sw_manuals/petalinux2014_4/ug1144-petalinux-tools-reference-guide.pdf}{PetaLinux Tools Reference Guide}
-  \item \href{http://www.syfer.com.au/assets/s502-00000-a.pdf}{Installation Guide for PetaLinux 2014.4 (Not by Xilinx)}
   \item \href{http://www.silabs.com/products/mcu/Pages/USBtoUARTBridgeVCPDrivers.aspx}{Drivers for Zynq ZC706 UART}
 \end{itemize}
 \subsection{Supplies}
@@ -356,6 +355,7 @@ This was as far as we were able to get with debugging this issue. Something we w
 \subsubsection{Shell Script for the 64-bit VM}
 \texttt{3\_create\_boot\_image.sh}
 \lstinputlisting{shellscripts/3_create_Boot_image.sh}
+
 \chapter{Alternate Approaches}
 The first approach we attempted was to build our own ethernet system. From the background chapter, I hope I've gotten across the difficulty of doing so. I thought I could just watch the line for a preamble, and start reading the bits after a start of frame delimiter. The more I read and researched the more layers of complexity I realized existed ontop of such a seemlingly simple operation. Then apart from just reading bits, transmitting and the other protocols and interfaces to conform to made this infeasible.
 
@@ -402,6 +402,17 @@ Building this is challenging, and not in the way you'd expect. In reality, there
 The challenge is learning to use Vivado, and trying to find documentation on what you're using. There is no guide that gives you just enough working knowledge to start building anything. It's a lot of trial and error, and Vivado error messages are often horrifically useless.
 Almost every piece of documentation you find will be technically correct, full of detailed information, and still somehow utterly useless.
 Their IP documentation will tell you the exact timings of every signal, where every piece of I/O is, and at the end of it, you'll still have no clue how to use this particular IP. Instead, looking for example designs and design feedback on the wiki and the forums will be much more helpful. But whatever you do read, know that it often won't be correct. You'll have to fish out the parts you can use, and ignore the rest. A lot of wiki example designs just don't work at all. In the end, get used to starting quickly and restarting often. If this is what you'd like to build, do it! You'll learn a lot, and hopefully you can pick up where we left off. Good luck!
+
+\subsection{Edward Nolan}
+One of the challenges that we faced this semester was figuring out how to approach a new topic, networking, that none of us were experts on, without having a blueprint from previous projects to base our experience on.
+
+I think that in addition to the technical experience I've gained from this project, I will also value the lessons I've gained about what works and what doesn't when you're attempting something that you're unfamiliar with. One of the things that our team was good at getting done was doing research and gathering background information. However, there wasn't enough of a sense of urgency to try to act on what we found out, and we should have been ready to ``fail faster'' by testing out different options to see if they were viable as soon as we could.
+
+Another factor that made our project difficult was dealing with inaccurate, incomplete, or outdated documentation. The problem that we were unable to overcome was not mentioned in the Xilinx Wiki guide. Information that came from forums or unofficial sources was more difficult to understand and act on, despite being necessary to move forward with the project. 
+
+We should also have reached out earlier on for help from people with more experience with these topics. The Xilinx forums could have been helpful if we had used them more to ask directly relevant questions, instead of only referencing threads that were started by other engineers. More reliance on outside expertise could also have helped us recognize when our project was on the wrong track.
+
+Overall, although our team didn't achieve what we planned, I enjoyed the experience, and learned a lot about both networking technology and scheduling and working in a group project. Good luck to any future 545 Ethernet teams!
 
 \subsection{Dale Zhang}
 For me, this class was challenging for a multitude of reasons. First off, I hadn't touched Verilog since I took 18-240 a few years ago, and I also wasn't very comfortable with HDL. In addition, in the context of our project, I had very little knowledge on ethernet and networking, so I had to learn a lot about how our project worked as I went along.
