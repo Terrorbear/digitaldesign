@@ -139,18 +139,76 @@ but for LAN protocols like ethernet there is no flow control in this sublayer.
 This sublayer interprets the bit stream into a MAC ethernet frame, checks for frame errors, and passes on the frame in its disessembled form in reception mode. When transmitting, it takes the frame, adds the preamble and start of frame delimiter and adds its own source MAC address. It is important to know that the order of transmission is by one octel at a time with the low-order bits first. Usually the MAC handles collision detection as well, and carrier sense, but since we have full-duplex you can ignore these. In short, the MAC interprets the signals from the GMII and sends the layer 2 ethernet frame to the processing system.
 
 \chapter{Basic Approach}
+I will assume that your project is not to just implement the PHY and you're trying to build something on top of the PHY because if all you wanted to do was build the PHY yourself, the background chapter is all you need. This chapter is about how to quickly get started on making ethernet in programmable logic, and how you might modify it to make additions to it.
 
+After numerous failed attempts, we finally settled on using the Zynq PL Ethernet \cite{zynq_pl_eth} guide on the Xilinx Wiki; however, we never got it completely working before the semester ended. Had we discovered it earlier, and decided on going down this route earlier, perhaps things would have been different. Also, when we actually started using it, it was in flux. Someone was editting the page still, writing the 2015 version (XAPP1082 v4.0); so we ended up using the 2014 version (XAPP1082 v3.0). But by the time you've seen this guide, there will definitely be a 2015 version and possibly even newer ones.
 
-\chapter{Ethernet PL IP Guide}
+Perhaps you can follow the wiki guide right now, and all the steps work for you right off the bat.
+For us, it didn't turn out this way.
+The guide in general is great, and it went smoothly for most of the way until we ran into a problem with the PetaLinux network stack.
+We'll discuss PetaLinux more in depth in a later chapter because that discussion will be sizeable in and of itself. So for the rest of this chapter, I'll be mostly explaining what the steps in the wiki are doing so that you will be able to modify their setup. There's no need to cover each instruction, I'll just comment on the ones that warrant an explanation for a beginner. Remember, the instructions I'll be covering are for version 3, so you'll have to translate it yourself for later versions.
+
+\section{Building PL Ethernet}
+First of all, we're not interested in the PS-EMIO design on the wiki since that uses the built in Marvel chip as the ethernet adapter and it connects to the processing system through the Extended Multiuse I/O (EMIO). There is very little we can modify in that design. Rather, scroll down until you find the section titled \textbf{Building PL Ethernet}. It will tell you to run a tcl script which is how vivado allows you to script building designs. At the top you'll see it specify a vivado version number as well as the board number this script was made for. The script you download from this wiki will be for the ZC706 board. Following the next few steps will get you a bitstream, but know that this process can sometimes take up to an hour. So make sure you export it to the SDK. When you export, if you leave the path as ``$<$ local to project $>$`` you'll only be able to save one bitstream, so if you wanted a backup you'd need to make a seperate directory for it.
+
+That was it as far as the programmable logic goes!
+Of course you should understand the design and what each block is doing in order to modify it.
+I'll go more into detail about each IP later, but the overall receive pipeline is that the SFP
+port connects to the PCS/PMA IP then to the TEMAC through the Serial GMII (SGMII) interface.
+The Tristate-Ethernet MAC (TEMAC) connects to the DMA block through an AXI-stream interface
+which then connects to the Processing System through the high performance AXI ports.
+In the transmission direction it's the same pipeline but backwards except instead of the HP port,
+the processing system connects to the General Purpose interconnect which then connects to the DMA.
+So if you wanted to analyze, filter, or modify the packets at the layer 2 level you should
+insert your own RTL after the TEMAC.
+
+\section{The PHY IP}
+The Vivado IP catalog thankfully has all the parts of the PHY you'll need. You'll have to be comfortable with using and making your own IP to work well in Vivado. Xilinx already has implementations of the PCS, PMA, MAC, etc. and they're in blocks which they call their Intellectual Property (IP). You can find the documentation on all of these on their website (there is a button to open them directly in vivado, but that button doesn't do anything. Get used to this). Their IP blocks communicate via a protocol called AXI4. You'll want to skim through The Zynq Book \cite{the_zynq_book} to understand AXI well. In general The Zynq Book doesn't go enough into detail, but for AXI it is still alright.
+
+\section{Modifying the pipeline}
+This setup they provide will move the whole data frame into memory. So the easiest place to add your own modifications is to the AXI-stream connect after the TEMAC and before the DMA. The modification we worked on was adding a filter to the output AXI of the TEMAC. Vivado_HLS is a high level synthesis tool that allows you to write C and C++, and it'll be compiled down to an HDL which is packaged inside of an IP. This IP will be added to your IP catalog so you can select it inside of Vivado. The function arguments are your input and output ports. You can set the ports to have difference interfaces using PRAGMAs, but @TODO
+
+If you want one of your ports to connect to the processing system, leave it unconnected in the block diagram, and add it to the address editor. Vivado will set up the connections automatically.
 
 \chapter{PetaLinux Networking}
 
 \chapter{Alternate Approaches}
+The first approach we attempted was to build our own ethernet system. From the background chapter, I hope I've gotten across the difficulty of doing so. I thought I could just watch the line for a preamble, and start reading the bits after a start of frame delimiter. The more I read and researched the more layers of complexity I realized existed ontop of such a seemlingly simple operation. Then apart from just reading bits, transmitting and the other protocols and interfaces to conform to made this infeasible.
 
-\chapter{More on PL}
+So we then looked more into a paper \cite{pp} I found describing a high level language Xilinx created to compile down into an HDL. This looked promising, but after a few email correspondences with Gordon Brebner, one of the authors of the paper, we learned that the packet processing language (PP) was discontinued by Xilinx. It was split into two, and the lower level portions became SDNet, a proprietary development environment made for building networking technologies. Unfortunately a license for it is very expensive, and it'd also mean we'd have to learn another tool besides Vivado.
+The higher level half turned into an open source project called the P4 language.
+This compiles a high level language into a number of target languages. Although Gordon was very enthuastic and helpful when it came to this, the P4 language is still very early in it's infancy and we knew there was going to be very little support. The other problem was that targetting Verilog wasn't complete yet, and we'd have to target SDNet anyways. Perhaps in the future, this would be more viable.
+
+I then tried to use their IP myself, and I tried to figure out a viable block design from their documentation. You can find my block diagram in Figure \ref{fig:my_design}.
+As far as I can tell, the clocking, the resets, and the axi connections are correct.
+The processing system is connected on the correct EMIO ports and memory mapped IO are all set in the address editor, and while this design was verified, it could not synthesize.
+And if you look closely at the console in the figure \ref{fig:my_design} you can see one of the most useless error messages I have ever come across.
+If it's hard to see, it says \texttt{HDL Generation failed for the IP integrator design /afs/ece.cmu.edu/usr/terencea/Public/18545/.../design\_1.bd}.
+It is tautologically true! I didn't need Vivado to tell me this! How do I go about debugging this?
+At this point, I couldn't find anymore information on the forums.
+Removing pieces just added more external peripheral ports so while some may have synthesized,
+they weren't ever useful.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=6in]{my_design}
+\caption{My PL Block Diagram}
+\label{fig:my_design}
+\end{figure}
+
+Another wiki guide we tried to follow was \textit{Zynq-7000 AP SoC - Performance - Ethernet Packet Inspection - Linux - Redirecting Packets to PL and Cache Tech Tip} \cite{redirect}. This one looked promising because we could have redirected traffic into PL and done all of our network analysis in hardware. However, it seems to be missing a lot of parts, and there were more edits to this wiki after we first discovered it. So perhaps in the future this wiki will be more useful. But at the time, some file headers were for the Kintex, some for Zynq, and some for Virtex. So it looked like an incomplete tech tip.
 
 \chapter{Miscellaneous}
 \section{Personal Statements}
+\subsection{Terence An}
+There is a lot to learn, and a lot that could go wrong. \\
+Looking back, the first thing I did wrong was have high expectations. Really. \\
+Building this is challenging, and not in the way you'd expect. In reality, there is a correct way to build ethernet in PL and have it properly communicate with Linux, and I suspect that proper solution is probably really short, but really elusive.
+
+The challenge is learning to use Vivado, and trying to find documentation on what you're using. There is no guide that gives you just enough working knowledge to start building anything. It's a lot of trial and error, and Vivado error messages are often horrifically useless.
+Almost every piece of documentation you find will be technically correct, full of detailed information, and still somehow utterly useless.
+Their IP documentation will tell you the exact timings of every signal, where every piece of I/O is, and at the end of it, you'll still have no clue how to use this particular IP. Instead, looking for example designs and design feedback on the wiki and the forums will be much more helpful. But whatever you do read, know that it often won't be correct. You'll have to fish out the parts you can use, and ignore the rest. A lot of wiki example designs just don't work at all. In the end, get used to starting quickly and restarting often. If this is what you'd like to build, do it! You'll learn a lot, and hopefully you can pick up where we left off. Good luck!
+
 \subsection{Dale Zhang}
 For me, this class was challenging for a multitude of reasons. First off, I hadn't touched Verilog since I took 18-240 a few years ago, and I also wasn't very comfortable with HDL. In addition, in the context of our project, I had very little knowledge on ethernet and networking, so I had to learn a lot about how our project worked as I went along.
 
@@ -165,8 +223,5 @@ For the class in general, it's definitely better to spend the long hours working
 To all future students reading this, good luck with the class and have fun!
 
 \printbibliography
-\appendix
-\chapter{Appendix}
-
 
 \end{document}
