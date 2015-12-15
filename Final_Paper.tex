@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \graphicspath{ {images/} }
+\usepackage{float}
 
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
 
@@ -42,6 +43,8 @@ That being said, going through Lab 2 in \textit{Vivado Design Suite Tutorial} \c
 \chapter{Ethernet Background}
 In this chapter we'll provide the basics of ethernet, just enough to get you started.
 Our discussion will start at the lowest level, and work our way up to the peripheral port on the processing system. If any of these sections are found to be lacking, you can find more information from the 802.3ab standard available on the \href{http://standards.ieee.org/about/get/802/802.3.html}{IEEE Standard Association}. Wikipedia is also your friend.
+While the intention of this book is to help you build your own ethernet,
+we dissuade people from actually implementing the physical transmission circuitry (PHY) yourself (the PCS and the PMA). The PMA layer is reasonable, but the PCS layer is incredibly involved. If that is all you intend to build for the semester, then perhaps it is possible. Instead we recommend you use the Vivado IP. So we'll simply provide an overview of what these parts do, and if you'd like to build these subsystems yourself, you'll have to refer to the 802.3 documentation.
 
 \section{Logical Link Layer}
 The logical link layer may also be referred to as the physical layer.
@@ -49,14 +52,16 @@ This network layer deals with how the bits are formatted into frames and how the
 If you've worked on any networking projects previously, you could probably just skip this section.
 
 \subsection{Ethernet Frame}
-In \ref{fig:eframe} you can see the basic format. However, there is another format for supporting larger frames called jumbo frames, so if frames don't look like what you're expecting that is a possibility. But it isn't very likely, because although most switches and routers support jumbo frames, they're not widely used.
-\begin{figure}[h]
+In Figure \ref{fig:eframe} you can see the basic format. However, there is another format for supporting larger frames called jumbo frames, so if frames don't look like what you're expecting that is a possibility. But it isn't very likely, because although most switches and routers support jumbo frames, they're not widely used. While we show the format of the frame, the logical link layer doesn't ascribe any meaning to these bits.
+
+\begin{figure}[!h]
 \centering
 \includegraphics[width=6in]{eframe}
 \caption{Ethernet Frame Format}
 \small source:\url{https://en.wikipedia.org/wiki/Ethernet_frame}
 \label{fig:eframe}
 \end{figure}
+
 The layer one bit sequence is what you'd expect to find on the wire, and the layer two format is what you'd expect to reach the operating system.
 
 If there are other headers you're expecting, they'd be in the beginning of the payload. All information used by higher network layers would be found there as well. The standard maximum transmission unit is 1500 bytes, so if you're making a large download, it' be broken up into roughly 1500 byte chunks, each sent according to some highler level protocol like TCP or UDP and your application will receive them in these chunks.
@@ -68,13 +73,72 @@ so if you wanted to parse these bits yourself it's a little bit more complicated
 We'll discuss more about this in the PMA section.
 
 \subsection{Physical Medium Attachment (PMA)}
-You can find all the details in the 802.3z standard in chapter 40.
+The PMA is the first subsystem that connects to the actual wires which is called the Medium Dependent Interface (MDI). The signals then are transmitted to a PCS PMA interface.
+The PMA is fairly straight forward to implement, you simply have to properly implement a very brief transmit function, receive function, reset function, link monitor function, clock recovery function, and a fairly lengthly control function. The exact details can be found in the 802.3z standard, section 40.4.3. Figure \ref{fig:pma} gives a succinct overview of how the signals are used and generated.
 
+
+The MDI consists of 4 wires for each transmission direction and each wire can take of 5
+different voltages which we'll label as \{2,1,0,-1,-2\}.
+The transmit side constantly changes the voltage, even when idle.
+During idle, the voltages oscillate from 2 to 0 to -2 and back.
+The baud rate is 125 MBaud which matches the clock rate of 125 MHz so there's one symbol per 8 ns.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=4in]{pma}
+\caption{PMA Reference Diagram}
+\small source:802.3z Standard 40.4.3, Figure 40-13 \cite{802.3z}
+\label{fig:pma}
+\end{figure}
 
 \subsection{Physical Coding Sublayer (PCS)}
-You can find all the details in the 802.3z standard in chapter 40.
+The PCS is the subsystem that connects from the PMA to the Media Independent Interface (MII).
+Because this guide is for 1000Base-T, our PCS must interface to Gigabit Media Independent Interface (GMII) or the Reduced GMII (RGMII).
+In figure \ref{fig:pcs} you can see an overview of the PCS function. However, it hides a lot
+of complexity. Implementing your own PCS is a very large undertaking,
+despite the small reference diagram. It might appear as if you only have to implement
+the transmit function, the transmit enable, collision detection, and the receive function.
+The transmit function alone, is monumental.
+We have to convert the bit stream into 4 wire code groups,
+where each byte is encoded using the 4D-PAM5 technique into 4 quinary symbols.
+We also have to scramble these symbols with a linear feedback shift technique.
+The exact specifications can be found in section 40.3.1.3 in the 802.3z standard.
+The state diagram can be seen in figure \ref{fig:pcs_transmit}.
 
-\chapter{Basic Approaches}
+\begin{figure}[H]
+\centering
+\includegraphics[width=4in]{pcs}
+\caption{PCS Reference Diagram}
+\small source:802.3z Standard 40.3.1, Figure 40-5 \cite{802.3z}
+\label{fig:pcs}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=4in]{pcs_transmit}
+\caption{PCS Transmit State Diagram}
+\small source:{802.3z Standard 40.3.4, Figure 40-9} \cite{802.3z}
+\label{fig:pcs_transmit}
+\end{figure}
+
+Luckily though, the PCS for 1000Base-T doesn't haven't to handle collision detection since
+1000Base-T is full duplex.
+The PCS also uses the MII's managment interface to handle Auto-Negotiation which is required
+in 1000Base-T.
+
+\section{Data Link Layer}
+The data link layer is comprised of two sublayers,
+but this would be the format an operating system sees.
+The layer one ethernet frame has its preamble and start of frame delimiter dropped by the MAC subsystem. Remember that the logical link layer was agnostic to the ethernet frame format.
+It is only the MAC that understands which bits are which part.
+\subsection{Logical Link Control}
+This sublayer is higher up than the MAC and handles network control frames. It handles higher level network protocols like IP, Decnet, Appletalk, etc. We can ignore these for your ethernet subsystem.
+Technically, a part flow control also resides in this sublayer,
+but for LAN protocols like ethernet there is no flow control in this sublayer.
+\subsection{Media Access Control (MAC)}
+This sublayer interprets the bit stream into a MAC ethernet frame, checks for frame errors, and passes on the frame in its disessembled form in reception mode. When transmitting, it takes the frame, adds the preamble and start of frame delimiter and adds its own source MAC address. It is important to know that the order of transmission is by one octel at a time with the low-order bits first. Usually the MAC handles collision detection as well, and carrier sense, but since we have full-duplex you can ignore these. In short, the MAC interprets the signals from the GMII and sends the layer 2 ethernet frame to the processing system.
+
+\chapter{Basic Approach}
 
 
 \chapter{Ethernet PL IP Guide}
