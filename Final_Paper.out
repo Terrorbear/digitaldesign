@@ -3,19 +3,20 @@
 \BOOKMARK [0][-]{chapter.3}{Basic Approaches}{}% 3
 \BOOKMARK [0][-]{chapter.4}{Ethernet PL Guide}{}% 4
 \BOOKMARK [0][-]{chapter.5}{PetaLinux Networking}{}% 5
-\BOOKMARK [1][-]{section.5.1}{Relevant Links}{chapter.5}% 6
-\BOOKMARK [1][-]{section.5.2}{Background Information}{chapter.5}% 7
-\BOOKMARK [2][-]{subsection.5.2.1}{Documentation and Guides}{section.5.2}% 8
-\BOOKMARK [2][-]{subsection.5.2.2}{Supplies}{section.5.2}% 9
-\BOOKMARK [1][-]{section.5.3}{Using Petalinux}{chapter.5}% 10
-\BOOKMARK [2][-]{subsection.5.3.1}{Creating Boot Media}{section.5.3}% 11
-\BOOKMARK [2][-]{subsection.5.3.2}{Using XAPP1082's Development Setup on Ubuntu}{section.5.3}% 12
-\BOOKMARK [2][-]{subsection.5.3.3}{Connecting to the UART of the ZYNQ ZC706}{section.5.3}% 13
-\BOOKMARK [2][-]{subsection.5.3.4}{Petalinux Networking Setup}{section.5.3}% 14
-\BOOKMARK [2][-]{subsection.5.3.5}{Bugs and Roadblocks}{section.5.3}% 15
-\BOOKMARK [0][-]{chapter.6}{Alternate Approaches}{}% 16
-\BOOKMARK [0][-]{chapter.7}{More on PL}{}% 17
-\BOOKMARK [0][-]{chapter.8}{Miscellaneous}{}% 18
-\BOOKMARK [1][-]{section.8.1}{Personal Statements}{chapter.8}% 19
-\BOOKMARK [2][-]{subsection.8.1.1}{Dale Zhang}{section.8.1}% 20
-\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 21
+\BOOKMARK [1][-]{subsection.5.0.1}{Introduction}{chapter.5}% 6
+\BOOKMARK [2][-]{subsection.5.0.2}{Hyperlinks to Relevant Documentation}{subsection.5.0.1}% 7
+\BOOKMARK [2][-]{subsection.5.0.3}{Supplies}{subsection.5.0.1}% 8
+\BOOKMARK [1][-]{section.5.1}{Using Petalinux}{chapter.5}% 9
+\BOOKMARK [2][-]{subsection.5.1.1}{Creating Boot Media}{section.5.1}% 10
+\BOOKMARK [2][-]{subsection.5.1.2}{Building XAPP1082's Petalinux Configuration}{section.5.1}% 11
+\BOOKMARK [2][-]{subsection.5.1.3}{Connecting to the UART of the ZYNQ ZC706}{section.5.1}% 12
+\BOOKMARK [2][-]{subsection.5.1.4}{Petalinux Networking Setup and CMU Netreg}{section.5.1}% 13
+\BOOKMARK [2][-]{subsection.5.1.5}{Bugs and Roadblocks}{section.5.1}% 14
+\BOOKMARK [2][-]{subsection.5.1.6}{Other Notes}{section.5.1}% 15
+\BOOKMARK [2][-]{subsection.5.1.7}{Code Listing}{section.5.1}% 16
+\BOOKMARK [0][-]{chapter.6}{Alternate Approaches}{}% 17
+\BOOKMARK [0][-]{chapter.7}{More on PL}{}% 18
+\BOOKMARK [0][-]{chapter.8}{Miscellaneous}{}% 19
+\BOOKMARK [1][-]{section.8.1}{Personal Statements}{chapter.8}% 20
+\BOOKMARK [2][-]{subsection.8.1.1}{Dale Zhang}{section.8.1}% 21
+\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 22
